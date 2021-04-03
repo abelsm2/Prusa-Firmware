@@ -19,7 +19,7 @@
 #define DEVELOPER
 
 // Printer name
-#define CUSTOM_MENDEL_NAME "Prusa i3 MK3S"
+#define CUSTOM_MENDEL_NAME "Micah's i3 MK3S" // *** abelsm2 ***
 
 // Electronics
 #define MOTHERBOARD BOARD_EINSY_1_0a
@@ -338,7 +338,7 @@
 #define EXTRUDER_AUTO_FAN_TEMPERATURE 50
 #define EXTRUDER_AUTO_FAN_SPEED   255  // == full speed
 #define EXTRUDER_ALTFAN_DETECT
-#define EXTRUDER_ALTFAN_SPEED_SILENT 128
+#define EXTRUDER_ALTFAN_SPEED_SILENT 255 // *** abelsm2 *** FULL SPEED
 
 
 
