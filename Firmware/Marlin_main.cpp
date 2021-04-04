@@ -5502,7 +5502,7 @@ if(eSoundMode!=e_SOUND_MODE_SILENT)
                 SERIAL_PROTOCOL(MESH_HOME_Z_SEARCH);
                 SERIAL_PROTOCOLLNPGM("\nMeasured points:");
 
-                // abelsm2 adjust output so center point is at 0 and everything else is relative
+                // abelsm2 adjust output so center point is at 0 and everything else is relative to it
                 float centerPoint = mbl.z_values[((MESH_NUM_Y_POINTS+1) / 2) - 1][((MESH_NUM_Y_POINTS+1) / 2) - 1];
 
                 for (int y = MESH_NUM_Y_POINTS-1; y >= 0; y--) {
