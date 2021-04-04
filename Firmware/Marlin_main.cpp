@@ -5501,10 +5501,14 @@ if(eSoundMode!=e_SOUND_MODE_SILENT)
                 SERIAL_PROTOCOLPGM("\nZ search height: ");
                 SERIAL_PROTOCOL(MESH_HOME_Z_SEARCH);
                 SERIAL_PROTOCOLLNPGM("\nMeasured points:");
+
+                // abelsm2 adjust output so center point is at 0 and everything else is relative
+                float centerPoint = mbl.z_values[((MESH_NUM_Y_POINTS+1) / 2) - 1][((MESH_NUM_Y_POINTS+1) / 2) - 1];
+
                 for (int y = MESH_NUM_Y_POINTS-1; y >= 0; y--) {
                     for (int x = 0; x < MESH_NUM_X_POINTS; x++) {
                         SERIAL_PROTOCOLPGM("  ");
-                        SERIAL_PROTOCOL_F(mbl.z_values[y][x], 5);
+                        SERIAL_PROTOCOL_F(mbl.z_values[y][x] - centerPoint, 5); // abelsm2
                     }
                     SERIAL_PROTOCOLLN();
                 }
