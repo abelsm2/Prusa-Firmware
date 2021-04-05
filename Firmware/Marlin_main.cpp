@@ -8645,165 +8645,189 @@ Sigma_Exit:
     break;
 
     // abelsm2 mCodes added for 0.9 stepper testing and enabled by TMC2130_SERVICE_CODES_M910_M918
-    case 919: //! abelsm2 M919 - Set TMC2130 toff
-         {
-             uint8_t a = 0;
-             uint8_t theValue;
 
-             if (code_seen('X'))
-             {
-              a = 0;
-              theValue = code_value();
-             }
-              if (code_seen('Y'))
-             {
-              a = 1;
-              theValue = code_value();
-             }
-              if (code_seen('Z'))
-             {
-              a = 2;
-              theValue = code_value();
-             }
-              if (code_seen('E'))
-             {
-              a = 3;
-              theValue = code_value();
-             }
+    /*! abelsm2 M919 - Set TMC2130 toff
+    ### M919 - Set TMC2130 toff
+    Not active in default, only if `TMC2130_SERVICE_CODES_M910_M918` is defined in source code.
+    #### Usage
 
-             tmc2130_chopper_config[a].toff = theValue;
-             printf_P(_N("tmc2130_toff[%c]=%d\n"), "XYZE"[a], tmc2130_chopper_config[a].toff);
+        M919 [ X | Y ]
 
-             tmc2130_setup_chopper(a, tmc2130_mres[a], tmc2130_current_h[a], tmc2130_current_r[a]);
-        }
-        break;
+    #### Parameters
+    - `X` - X stepper driver toff value
+    - `Y` - Y stepper driver toff value
+    */
+    case 919:
+    {
+        uint8_t a = 0;
+        uint8_t theValue;
 
-     case 920: //! abelsm2 M920 - Set TMC2130 hstr
-         {
-             uint8_t a = 0;
-             uint8_t theValue;
-
-             if (code_seen('X'))
-             {
-              a = 0;
-              theValue = code_value();
-             }
-              if (code_seen('Y'))
-             {
-              a = 1;
-              theValue = code_value();
-             }
-              if (code_seen('Z'))
-             {
-              a = 2;
-              theValue = code_value();
-             }
-              if (code_seen('E'))
-             {
-              a = 3;
-              theValue = code_value();
-             }
-
-             tmc2130_chopper_config[a].hstr = theValue;
-             printf_P(_N("tmc2130_hstr[%c]=%d\n"), "XYZE"[a], tmc2130_chopper_config[a].hstr);
-
-             tmc2130_setup_chopper(a, tmc2130_mres[a], tmc2130_current_h[a], tmc2130_current_r[a]);
-        }
-        break;
-
-     case 921: //! abelsm2 M921 - Set TMC2130 hend
+        if (code_seen('X'))
         {
-             uint8_t a = 0;
-             uint8_t theValue;
-
-             if (code_seen('X'))
-             {
-              a = 0;
-              theValue = code_value();
-             }
-              if (code_seen('Y'))
-             {
-              a = 1;
-              theValue = code_value();
-             }
-              if (code_seen('Z'))
-             {
-              a = 2;
-              theValue = code_value();
-             }
-              if (code_seen('E'))
-             {
-              a = 3;
-              theValue = code_value();
-             }
-
-             tmc2130_chopper_config[a].hend = theValue;
-             printf_P(_N("tmc2130_hend[%c]=%d\n"), "XYZE"[a], tmc2130_chopper_config[a].hend);
-
-             tmc2130_setup_chopper(a, tmc2130_mres[a], tmc2130_current_h[a], tmc2130_current_r[a]);
+            a = 0;
+            theValue = code_value();
         }
-        break;
-
-     case 922: //! abelsm2 M922 - Set TMC2130 tbl
+        if (code_seen('Y'))
         {
-             uint8_t a = 0;
-             uint8_t theValue;
-
-             if (code_seen('X'))
-             {
-              a = 0;
-              theValue = code_value();
-             }
-              if (code_seen('Y'))
-             {
-              a = 1;
-              theValue = code_value();
-             }
-              if (code_seen('Z'))
-             {
-              a = 2;
-              theValue = code_value();
-             }
-              if (code_seen('E'))
-             {
-              a = 3;
-              theValue = code_value();
-             }
-
-             tmc2130_chopper_config[a].tbl = theValue;
-             printf_P(_N("tmc2130_tbl[%c]=%d\n"), "XYZE"[a], tmc2130_chopper_config[a].tbl);
-
-             tmc2130_setup_chopper(a, tmc2130_mres[a], tmc2130_current_h[a], tmc2130_current_r[a]);
-
+            a = 1;
+            theValue = code_value();
         }
-        break;
+
+        tmc2130_chopper_config[a].toff = theValue;
+        printf_P(_N("tmc2130_toff[%c]=%d\n"), "XY"[a], tmc2130_chopper_config[a].toff);
+
+        tmc2130_setup_chopper(a, tmc2130_mres[a], tmc2130_current_h[a], tmc2130_current_r[a]);
+    }
+    break;
+
+    /*! abelsm2 M920 - Set TMC2130 hstr
+    ### M920 - Set TMC2130 hstr
+    Not active in default, only if `TMC2130_SERVICE_CODES_M910_M918` is defined in source code.
+    #### Usage
+
+        M920 [ X | Y ]
+
+    #### Parameters
+    - `X` - X stepper driver hstr value
+    - `Y` - Y stepper driver hstr value
+    */
+    case 920:
+    {
+        uint8_t a = 0;
+        uint8_t theValue;
+
+        if (code_seen('X'))
+        {
+            a = 0;
+            theValue = code_value();
+        }
+        if (code_seen('Y'))
+        {
+            a = 1;
+            theValue = code_value();
+        }
+
+        tmc2130_chopper_config[a].hstr = theValue;
+        printf_P(_N("tmc2130_hstr[%c]=%d\n"), "XY"[a], tmc2130_chopper_config[a].hstr);
+
+        tmc2130_setup_chopper(a, tmc2130_mres[a], tmc2130_current_h[a], tmc2130_current_r[a]);
+    }
+    break;
+
+    /*! abelsm2 M921 - Set TMC2130 hend
+    ### M920 - Set TMC2130 hend
+    Not active in default, only if `TMC2130_SERVICE_CODES_M910_M918` is defined in source code.
+    #### Usage
+
+        M921 [ X | Y ]
+
+    #### Parameters
+    - `X` - X stepper driver hend value
+    - `Y` - Y stepper driver hend value
+    */
+    case 921:
+    {
+        uint8_t a = 0;
+        uint8_t theValue;
+
+        if (code_seen('X'))
+        {
+            a = 0;
+            theValue = code_value();
+        }
+        if (code_seen('Y'))
+        {
+            a = 1;
+            theValue = code_value();
+        }
+
+        tmc2130_chopper_config[a].hend = theValue;
+        printf_P(_N("tmc2130_hend[%c]=%d\n"), "XY"[a], tmc2130_chopper_config[a].hend);
+
+        tmc2130_setup_chopper(a, tmc2130_mres[a], tmc2130_current_h[a], tmc2130_current_r[a]);
+    }
+    break;
+
+    /*! abelsm2 M922 - Set TMC2130 tbl
+    ### M920 - Set TMC2130 tbl
+    Not active in default, only if `TMC2130_SERVICE_CODES_M910_M918` is defined in source code.
+    #### Usage
+
+        M922 [ X | Y ]
+
+    #### Parameters
+    - `X` - X stepper driver tbl value
+    - `Y` - Y stepper driver tbl value
+    */
+    case 922:
+    {
+        uint8_t a = 0;
+        uint8_t theValue;
+
+        if (code_seen('X'))
+        {
+            a = 0;
+            theValue = code_value();
+        }
+        if (code_seen('Y'))
+        {
+            a = 1;
+            theValue = code_value();
+        }
+
+        tmc2130_chopper_config[a].tbl = theValue;
+        printf_P(_N("tmc2130_tbl[%c]=%d\n"), "XY"[a], tmc2130_chopper_config[a].tbl);
+
+        tmc2130_setup_chopper(a, tmc2130_mres[a], tmc2130_current_h[a], tmc2130_current_r[a]);
+    }
+    break;
 
     // abelsm2 end new m-Codes enabled by TMC2130_SERVICE_CODES_M910_M918
 
 #endif //TMC2130_SERVICE_CODES_M910_M918
 
     // abelsm2 MCodes that are always available
-    case 924: //! abelsm2 M924 - Set sg_thrs_home
+
+    /*! abelsm2 M924 - Set TMC2130 sg_thrs_home
+    ### M924 - Set TMC2130 sg_thrs_home
+    #### Usage
+
+        M924 [ X | Y ]
+
+    #### Parameters
+    - `X` - X stepper driver sg_thrs_home value
+    - `Y` - Y stepper driver sg_thrs_home value
+    */
+    case 924:
     {
         if (code_seen('X')) tmc2130_sg_thr_home[X_AXIS] = code_value();
         if (code_seen('Y')) tmc2130_sg_thr_home[Y_AXIS] = code_value();
-        if (code_seen('Z')) tmc2130_sg_thr_home[Z_AXIS] = code_value();
-        if (code_seen('E')) tmc2130_sg_thr_home[E_AXIS] = code_value();
+
         for (uint8_t a = X_AXIS; a <= E_AXIS; a++)
           printf_P(_N("tmc2130_sg_thr_home[%c]=%d\n"), "XYZE"[a], tmc2130_sg_thr_home[a]);
     }
     break;
 
+    /*! abelsm2 M924 - Set TMC2130 homing feed rate
+    ### M925 - Set TMC2130 homing feed rate
+    #### Usage
+
+        M925 [ X | Y ]
+
+    #### Parameters
+    - `X` - X stepper driver sg_thrs_home value
+    - `Y` - Y stepper driver sg_thrs_home value
+    */
     case 925: //! abelsm2 M925 - Set homing feed rate
     {
         if (code_seen('X')) homing_feedrate[X_AXIS] = code_value();
         if (code_seen('Y')) homing_feedrate[Y_AXIS] = code_value();
-        if (code_seen('Z')) homing_feedrate[Z_AXIS] = code_value();
+
         for (uint8_t a = X_AXIS; a <= Z_AXIS; a++)
-            printf_P(_N("homing_feedrate[%c]=%f\n"), "XYZE"[a], homing_feedrate[a]);
+            printf_P(_N("homing_feedrate[%c]=%f\n"), "XYZ"[a], homing_feedrate[a]);
     }
     break;
-    // abelsm2 end MCodes that are always available
+    // abelsm2 end of MCodes that are always available
 
     /*!
 	### M350 - Set microstepping mode <a href="https://reprap.org/wiki/G-code#M350:_Set_microstepping_mode">M350: Set microstepping mode</a>
