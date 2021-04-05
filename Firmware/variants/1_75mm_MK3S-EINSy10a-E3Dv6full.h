@@ -6,6 +6,9 @@
 /*------------------------------------
  GENERAL SETTINGS
  *------------------------------------*/
+// abelsm2
+// original credit for changes related to 0.9 stepper motor support belongs to guykuo who stopped
+// supporting at 3.8.1.  His original repo: https://github.com/guykuo/Prusa-Firmware
 
 // Printer revision
 #define PRINTER_TYPE PRINTER_MK3S
@@ -28,6 +31,7 @@
 
 // PSU
 #define PSU_Delta                                 // uncomment if DeltaElectronics PSU installed
+// abelsm2 see https://github.com/prusa3d/Prusa-Firmware/issues/2173 for explanation of this define
 
 
 // Uncomment the below for the E3D PT100 temperature sensor (with or without PT100 Amplifier)
@@ -40,11 +44,63 @@
 /*------------------------------------
  AXIS SETTINGS
  *------------------------------------*/
+// Geared extruders now set for lower micro-stepping to avoid overrunning EINSY during fast retracts or MMU2S filament moves.
+// Factory reset and delete all data after installing this firmware. Otherwise EEPROM settings override settings in this firmware.
+// After installing this firmware, send M350 and M92 commands to force correct micro-stepping and e-step rates. M350 must be first
+// because M350 command will sometimes alter existing M92 setting
+//
+// e-steps values for M92 depend on your extruder gearing.
+// xxx = 280 for non-geared extruder
+// xxx = 473 for BNBSX with 54:16 gearing
+// xxx = 490 for BNBSX with 56:16 gearing
+//
+// non-geared extruder, 1.8 degree motor
+// M350 E32
+// M92 E280
+// M500
+//
+// geared extruder, 1.8 degree motor
+// M350 E16
+// M92 Exxx
+// M500
+//
+// Follow with power off/on and M503 to verify settings are correct.
+
+// abelsm2 Uncommented one or both below to specify 0.9 degree stepper motors on x or y axes
+// Motors used should be 1 amp or lower current rating to avoid overheating TMC2130 drivers in Stealthchop.
+// Kuo recommended 0.9 degree motors for X, Y, or direct drive E are Moons MS17HA2P4100 or OMC 17HM15-0904S
+//#define X_AXIS_MOTOR_09 // abelsm2 X axis
+//#define Y_AXIS_MOTOR_09 // abelsm2 Y axis
+
+// abelsm2 Uncomment for BNBSX geared extruders with 54:16 gear
+// Don't forget to also send gcode to set e-steps as detailed earlier
+// Reversion back from geared extruder requires sending M92 E280 & M500 to printer
+//
+//#define EXTRUDER_GEARRATIO_3375 //Kuo Uncomment for extruder with gear ratio 3.375 like 54:16 BNBSX.
+
+// abelsm2 extrude before unload filament
+#define EXTRUDE_BEFORE_UNLOAD // uncomment to always extrude filament a short distance before unloading. Forms smaller tip.
+
+// abelsm2 ---------------------------- End of defines one normally needs to change ----------------------------
+
+#ifdef X_AXIS_MOTOR_09 // adjust min acceptable homing count for 0.9 motors
+    #define kHOMING_CNT_MIN 10 // 0.9 motors often home at much lower count
+#elif defined(Y_AXIS_MOTOR_09)
+    #define kHOMING_CNT_MIN 10
+#else
+    #define kHOMING_CNT_MIN 63 // original was 63 for 1.8 motors
+#endif
 
 // Steps per unit {X,Y,Z,E}
-//#define DEFAULT_AXIS_STEPS_PER_UNIT   {100,100,3200/8,140}
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {100,100,3200/8,280}
-//#define DEFAULT_AXIS_STEPS_PER_UNIT   {100,100,3200/8,560}
+
+#ifdef EXTRUDER_GEARRATIO_3375
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   {100,100,3200/8,473} // 3.375 geared extruder like 54:16 BNBSX
+    #define TMC2130_UNLOAD_CURRENT_R 20  // higher unload current than stock for M600
+    #define EXTRUDER_GEARED
+#else
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   {100,100,3200/8,280} // default steps/unit e-axis
+    #define TMC2130_UNLOAD_CURRENT_R 12  // lower current for M600 to protect filament sensor with stock extruder
+#endif
 
 // Endstop inverting
 #define X_MIN_ENDSTOP_INVERTING 0 // set to 1 to invert the logic of the endstop.
@@ -82,7 +138,22 @@
 #define Z_PAUSE_LIFT 20
 
 #define NUM_AXIS 4 // The axis order in all axis related arrays is X, Y, Z, E
-#define HOMING_FEEDRATE {3000, 3000, 800, 0}  // set the homing speeds (mm/min) // 3000 is also valid for stallGuard homing. Valid range: 2200 - 3000
+
+// abelsm2 set the homing speeds (mm/min)
+// latest measurements suggest OMC at 2500 and Moons at 2400
+#ifdef X_AXIS_MOTOR_09
+    #define HOMING_FEEDRATE_X 2400  // different feed rate needed for reliable X 0.9 degree motor stall Guard
+#else
+    #define HOMING_FEEDRATE_X 3000 // 3000 is also valid for stallGuard homing. Valid range: 2200 - 3000
+#endif
+
+#ifdef Y_AXIS_MOTOR_09
+    #define HOMING_FEEDRATE_Y 2500  // different feed rate needed for reliable Y 0.9 degree motor stall Guard
+#else
+    #define HOMING_FEEDRATE_Y 3000 // 3000 is also valid for stallGuard homing. Valid range: 2200 - 3000
+#endif
+
+#define HOMING_FEEDRATE {HOMING_FEEDRATE_X, HOMING_FEEDRATE_Y, 800, 0}  // use feed rates needed for reliable X AND Y 0.9 degree motor stall Guard
 
 //#define DEFAULT_Y_OFFSET    4.f // Default distance of Y_MIN_POS point from endstop, when the printer is not calibrated.
 /**
@@ -209,37 +280,111 @@
 
 #define TMC2130_FCLK 12000000       // fclk = 12MHz
 
-#define TMC2130_USTEPS_XY   16        // microstep resolution for XY axes
-#define TMC2130_USTEPS_Z    16        // microstep resolution for Z axis
-#define TMC2130_USTEPS_E    32        // microstep resolution for E axis
+// abelsm2 independently define x and y microsteps for stepper type
+#ifndef X_AXIS_MOTOR_09
+    #define TMC2130_USTEPS_X    16      // microstep resolution for 1.8 degree X axis
+#else
+    #define TMC2130_USTEPS_X    8       // reduce X microsteps to 8 because EINSY cannot keep up with 16 on 0.9 degree motor
+#endif
+
+#ifndef Y_AXIS_MOTOR_09
+    #define TMC2130_USTEPS_Y    16      // microstep resolution for 1.8 degree Y axis
+#else
+    #define TMC2130_USTEPS_Y    8       // reduce Y microsteps to 8 because EINSY cannot keep up with 16 on 0.9 degree motor
+#endif
+
+#define TMC2130_USTEPS_Z        16      // microstep resolution for Z axis
+
+#ifndef EXTRUDER_GEARED
+    #define TMC2130_USTEPS_E    32      // microstep resolution for E axis, 1.8 degree motor, non-geared
+#else
+    #define TMC2130_USTEPS_E    16      // microstep resolution for E axis, 1.8 motor, geared extruder
+#endif
+
 #define TMC2130_INTPOL_XY   1         // extrapolate 256 for XY axes
 #define TMC2130_INTPOL_Z    1         // extrapolate 256 for Z axis
 #define TMC2130_INTPOL_E    1         // extrapolate 256 for E axis
 
-#define TMC2130_PWM_GRAD_X  2         // PWMCONF
-#define TMC2130_PWM_AMPL_X  230       // PWMCONF
-#define TMC2130_PWM_AUTO_X  1         // PWMCONF
-#define TMC2130_PWM_FREQ_X  2         // PWMCONF
+// abelsm2 TMC2130_PWM_GRAD & TMC2130_PWM_AMP tuned for 09 motor.
+// Better axis motion control with lower TMC2130_PWM_GRAD 2,3,4 but can squeak during fast decelerations.
+// TMC2130_PWM_GRAD too high causes y-layer shifts.
+// TMC2130_PWM_GRAD_Y 4 is reasonable choice on Y.
+// Raised TMC2130_PWM_AMPL_Y to 250 to prevent y-layer shifts on weaker motors.
 
-#define TMC2130_PWM_GRAD_Y  2         // PWMCONF
-#define TMC2130_PWM_AMPL_Y  235       // PWMCONF
-#define TMC2130_PWM_AUTO_Y  1         // PWMCONF
-#define TMC2130_PWM_FREQ_Y  2         // PWMCONF
+#ifndef X_AXIS_MOTOR_09
+    #define TMC2130_PWM_GRAD_X  2       // PWM_GRAD
+    #define TMC2130_PWM_AMPL_X  230     // PWMCONF
+#else
+    #define TMC2130_PWM_GRAD_X  4       // PWM_GRAD 0.9 degree motor tuning
+    #define TMC2130_PWM_AMPL_X  235     // PWMCONF 0.9 degree motor tuning
+#endif
+#define TMC2130_PWM_AUTO_X      1       // PWMCONF
+#define TMC2130_PWM_FREQ_X      2       // PWMCONF
 
-#define TMC2130_PWM_GRAD_Z  4         // PWMCONF
-#define TMC2130_PWM_AMPL_Z  200       // PWMCONF
-#define TMC2130_PWM_AUTO_Z  1         // PWMCONF
-#define TMC2130_PWM_FREQ_Z  2         // PWMCONF
+#ifndef Y_AXIS_MOTOR_09
+    #define TMC2130_PWM_GRAD_Y  2       // PWM_GRAD
+    #define TMC2130_PWM_AMPL_Y  235     // PWMCONF
+#else
+    #define TMC2130_PWM_GRAD_Y  4       // PWM_GRAD 0.9 degree motor tuning
+    #define TMC2130_PWM_AMPL_Y  250     // PWMCONF 0.9 degree motor tuning
+#endif
+#define TMC2130_PWM_AUTO_Y      1       // PWMCONF
+#define TMC2130_PWM_FREQ_Y      2       // PWMCONF
 
-#define TMC2130_PWM_GRAD_E  4         // PWMCONF
-#define TMC2130_PWM_AMPL_E  240       // PWMCONF
-#define TMC2130_PWM_AUTO_E  1         // PWMCONF
-#define TMC2130_PWM_FREQ_E  2         // PWMCONF
+#define TMC2130_PWM_GRAD_Z      4       // PWMCONF
+#define TMC2130_PWM_AMPL_Z      200     // PWMCONF
+#define TMC2130_PWM_AUTO_Z      1       // PWMCONF
+#define TMC2130_PWM_FREQ_Z      2       // PWMCONF
 
-#define TMC2130_TOFF_XYZ    3         // CHOPCONF // fchop = 27.778kHz
-#define TMC2130_TOFF_E      3         // CHOPCONF // fchop = 27.778kHz
+#define TMC2130_PWM_GRAD_E      4       // PWMCONF
+#define TMC2130_PWM_AMPL_E      240     // PWMCONF
+#define TMC2130_PWM_AUTO_E      1       // PWMCONF
+#define TMC2130_PWM_FREQ_E      2       // PWMCONF
+
+// abelsm2 begin chopper defines with adjustments for 0.9 motors on x y z e
+//#define TMC2130_TOFF_E      3         // CHOPCONF // fchop = 27.778kHz
 //#define TMC2130_TOFF_E      4         // CHOPCONF // fchop = 21.429kHz
 //#define TMC2130_TOFF_E      5         // CHOPCONF // fchop = 17.442kHz
+
+#ifndef X_AXIS_MOTOR_09
+    #define TMC2130_TOFF_X 3 // Prusa defaults X // CHOPCONF // fchop = 27.778kHz
+    #define TMC2130_HSTR_X 5
+    #define TMC2130_HEND_X 1
+    #define TMC2130_TBL_X  2
+    #define TMC2130_RES_X  0
+#else
+    #define TMC2130_TOFF_X 2 // adjusted for 0.9 degree motors
+    #define TMC2130_HSTR_X 2
+    #define TMC2130_HEND_X 0
+    #define TMC2130_TBL_X  2
+    #define TMC2130_RES_X  0
+#endif
+
+#ifndef Y_AXIS_MOTOR_09
+    #define TMC2130_TOFF_Y 3 // Prusa defaults Y // CHOPCONF // fchop = 27.778kHz
+    #define TMC2130_HSTR_Y 5
+    #define TMC2130_HEND_Y 1
+    #define TMC2130_TBL_Y  2
+    #define TMC2130_RES_Y  0
+#else
+    #define TMC2130_TOFF_Y 2 // adjusted for 0.9 degree motors
+    #define TMC2130_HSTR_Y 2
+    #define TMC2130_HEND_Y 0
+    #define TMC2130_TBL_Y  2
+    #define TMC2130_RES_Y  0
+#endif
+
+#define TMC2130_TOFF_Z 3 // Prusa defaults Z // CHOPCONF // fchop = 27.778kHz
+#define TMC2130_HSTR_Z 5
+#define TMC2130_HEND_Z 1
+#define TMC2130_TBL_Z  2
+#define TMC2130_RES_Z  0
+
+#define TMC2130_TOFF_E 3 // Prusa defaults E // CHOPCONF // fchop = 27.778kHz
+#define TMC2130_HSTR_E 5
+#define TMC2130_HEND_E 1
+#define TMC2130_TBL_E  2
+#define TMC2130_RES_E  0
 
 //#define TMC2130_STEALTH_E // Extruder stealthChop mode
 //#define TMC2130_CNSTOFF_E // Extruder constant-off-time mode (similar to MK2)
@@ -258,22 +403,51 @@
 #define TMC2130_TCOOLTHRS_Z 500       // TCOOLTHRS - coolstep treshold
 #define TMC2130_TCOOLTHRS_E 500       // TCOOLTHRS - coolstep treshold
 
-#define TMC2130_SG_HOMING       1     // stallguard homing
-#define TMC2130_SG_THRS_X       3     // stallguard sensitivity for X axis
-#define TMC2130_SG_THRS_Y       3     // stallguard sensitivity for Y axis
-#define TMC2130_SG_THRS_Z       4     // stallguard sensitivity for Z axis
-#define TMC2130_SG_THRS_E       3     // stallguard sensitivity for E axis
-#define TMC2130_SG_THRS_HOME {3, 3, TMC2130_SG_THRS_Z, TMC2130_SG_THRS_E}
+#define TMC2130_SG_HOMING               1    // stallguard homing
+
+#ifndef X_AXIS_MOTOR_09 // abelsm2 stallguard homing settings for X
+    #define TMC2130_SG_THRS_X           3    // std stallguard sensitivity for X axis
+    #define TMC2130_SG_THRS_X_HOME      3    // std homing stallguard threshold for X axis
+#else
+      #define TMC2130_SG_THRS_X         4    // abelsm2 change here if different needed for 0.9 degree motors
+      #define TMC2130_SG_THRS_X_HOME    4
+#endif
+
+#ifndef Y_AXIS_MOTOR_09 // abelsm2 stallguard homing settings for Y
+    #define TMC2130_SG_THRS_Y           3    // std stallguard sensitivity for Y axis
+    #define TMC2130_SG_THRS_Y_HOME      3    // std homing stallguard threshold for Y axis
+#else
+    #define TMC2130_SG_THRS_Y           4    // abelsm2 change here if different needed for 0.9 degree motors
+    #define TMC2130_SG_THRS_Y_HOME      4
+#endif
+
+#define TMC2130_SG_THRS_Z               4    // stallguard sensitivity for Z axis
+#define TMC2130_SG_THRS_E               3    // stallguard sensitivity for E axis
+
+#define TMC2130_SG_THRS_HOME {TMC2130_SG_THRS_X_HOME, TMC2130_SG_THRS_Y_HOME, TMC2130_SG_THRS_Z, TMC2130_SG_THRS_E} // abelsm2
 
 //new settings is possible for vsense = 1, running current value > 31 set vsense to zero and shift both currents by 1 bit right (Z axis only)
 #define TMC2130_CURRENTS_H {16, 20, 35, 30}  // default holding currents for all axes
 #define TMC2130_CURRENTS_R {16, 20, 35, 30}  // default running currents for all axes
-#define TMC2130_CURRENTS_R_HOME {8, 10, 20, 18}  // homing running currents for all axes
+
+#ifndef X_AXIS_MOTOR_09 // abelsm2 running currents for homing X axis
+    #define X_AXIS_CURRENT_R_HOME 8     // prusa default
+#else
+    #define X_AXIS_CURRENT_R_HOME 10    // abelsm2 adjust x homing current slightly higher for 0.9 stepper
+#endif
+#ifndef Y_AXIS_MOTOR_09 // abelsm2 running currents for homing Y axis
+    #define Y_AXIS_CURRENT_R_HOME 10    // prusa default
+#else
+    #define Y_AXIS_CURRENT_R_HOME 12    // abelsm2 adjust y homing current slightly higher for 0.9 stepper
+#endif
+
+#define TMC2130_CURRENTS_R_HOME {X_AXIS_CURRENT_R_HOME, Y_AXIS_CURRENT_R_HOME, 20, 18}  // homing running currents for all axes
+
 
 #define TMC2130_STEALTH_Z
 #define TMC2130_DEDGE_STEPPING
 
-//#define TMC2130_SERVICE_CODES_M910_M918
+//#define TMC2130_SERVICE_CODES_M910_M918 // abelsm2 Uncomment this line to enable TMC2130 service codes
 
 //#define TMC2130_DEBUG
 //#define TMC2130_DEBUG_WR
@@ -290,12 +464,12 @@
 #define HEATER_2_MINTEMP 5
 #define HEATER_MINTEMP_DELAY 15000                // [ms] ! if changed, check maximal allowed value @ ShortTimer
 #if HEATER_MINTEMP_DELAY>USHRT_MAX
-#error "Check maximal allowed value @ ShortTimer (see HEATER_MINTEMP_DELAY definition)"
+    #error "Check maximal allowed value @ ShortTimer (see HEATER_MINTEMP_DELAY definition)"
 #endif
 #define BED_MINTEMP 10
 #define BED_MINTEMP_DELAY 50000                   // [ms] ! if changed, check maximal allowed value @ ShortTimer
 #if BED_MINTEMP_DELAY>USHRT_MAX
-#error "Check maximal allowed value @ ShortTimer (see BED_MINTEMP_DELAY definition)"
+    #error "Check maximal allowed value @ ShortTimer (see BED_MINTEMP_DELAY definition)"
 #endif
 #define SUPERPINDA_SUPPORT
 #define PINDA_MINTEMP 10
@@ -304,9 +478,9 @@
 
 // Maxtemps
 #if defined(E3D_PT100_EXTRUDER_WITH_AMP) || defined(E3D_PT100_EXTRUDER_NO_AMP)
-#define HEATER_0_MAXTEMP 410
+    #define HEATER_0_MAXTEMP 410
 #else
-#define HEATER_0_MAXTEMP 305
+    #define HEATER_0_MAXTEMP 305
 #endif
 #define HEATER_1_MAXTEMP 305
 #define HEATER_2_MAXTEMP 305
@@ -314,18 +488,18 @@
 #define AMBIENT_MAXTEMP 100
 
 #if defined(E3D_PT100_EXTRUDER_WITH_AMP) || defined(E3D_PT100_EXTRUDER_NO_AMP)
-// Define PID constants for extruder with PT100
-#define  DEFAULT_Kp 21.70
-#define  DEFAULT_Ki 1.60
-#define  DEFAULT_Kd 73.76
+    // Define PID constants for extruder with PT100
+    #define  DEFAULT_Kp 21.70
+    #define  DEFAULT_Ki 1.60
+    #define  DEFAULT_Kd 73.76
 #else
-// Define PID constants for extruder
-//#define  DEFAULT_Kp 40.925
-//#define  DEFAULT_Ki 4.875
-//#define  DEFAULT_Kd 86.085
-#define  DEFAULT_Kp 16.13
-#define  DEFAULT_Ki 1.1625
-#define  DEFAULT_Kd 56.23
+    // Define PID constants for extruder
+    //#define  DEFAULT_Kp 40.925
+    //#define  DEFAULT_Ki 4.875
+    //#define  DEFAULT_Kd 86.085
+    #define  DEFAULT_Kp 16.13
+    #define  DEFAULT_Ki 1.1625
+    #define  DEFAULT_Kd 56.23
 #endif
 
 // Extrude mintemp
@@ -338,7 +512,7 @@
 #define EXTRUDER_AUTO_FAN_TEMPERATURE 50
 #define EXTRUDER_AUTO_FAN_SPEED   255  // == full speed
 #define EXTRUDER_ALTFAN_DETECT
-#define EXTRUDER_ALTFAN_SPEED_SILENT 255 // abelsm2 disable fan speed reduction for alternate fans
+#define EXTRUDER_ALTFAN_SPEED_SILENT 255 // abelsm2 enable full speed for alternate fans
 
 
 
@@ -346,14 +520,21 @@
  LOAD/UNLOAD FILAMENT SETTINGS
  *------------------------------------*/
 
-// Load filament commands
-#define LOAD_FILAMENT_0 "M83"
-#define LOAD_FILAMENT_1 "G1 E70 F400"
-#define LOAD_FILAMENT_2 "G1 E40 F100"
+// Load filament distances and rates
+#define LOAD_FILAMENT_DIST_1 40  // abelsm2 Prusa default load
+#define LOAD_FILAMENT_RATE_1 400
+#define LOAD_FILAMENT_DIST_2 30
+#define LOAD_FILAMENT_RATE_2 300
 
-// Unload filament commands
-#define UNLOAD_FILAMENT_0 "M83"
-#define UNLOAD_FILAMENT_1 "G1 E-80 F7000"
+// Unload filament distances and rates
+#define UNLOAD_FILAMENT_DIST_0 3  // abelsm2 extrude slightly first to form finer tip
+#define UNLOAD_FILAMENT_RATE_0 60
+#define UNLOAD_FILAMENT_DIST_1 -45  // abelsm2 Prusa default unload. -53 is end of std PTFE on BNBSX
+#define UNLOAD_FILAMENT_RATE_1 5200
+#define UNLOAD_FILAMENT_DIST_2 -15
+#define UNLOAD_FILAMENT_RATE_2 1000
+#define UNLOAD_FILAMENT_DIST_3 -20
+#define UNLOAD_FILAMENT_RATE_3 1000
 
 /*------------------------------------
  CHANGE FILAMENT SETTINGS
