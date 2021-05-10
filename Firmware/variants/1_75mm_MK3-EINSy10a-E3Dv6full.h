@@ -308,6 +308,10 @@
 // TMC2130_PWM_GRAD_Y 4 is reasonable choice on Y.
 // Raised TMC2130_PWM_AMPL_Y to 250 to prevent y-layer shifts on weaker motors.
 
+// Low values for PWM_GRAD 1 to 4 give good carriage control, but you hear an annoying squeak during fast decels. Also, you see large current overshoots on the scope.
+// High values for PWM_GRAD 10 to 15 give very good current clamping and no more squeaks, but the y-axis is too heavy to use high values. If one over-regulates the overshoots, the y-axis will layer shift due to insufficient torque during big velocity changes.
+// Mid values PWM_GRAD 5-6 seems to be a good compromise.
+
 #ifndef X_AXIS_MOTOR_09
     #define TMC2130_PWM_GRAD_X  2       // PWM_GRAD
     #define TMC2130_PWM_AMPL_X  230     // PWMCONF
@@ -435,7 +439,7 @@
 #ifndef Y_AXIS_MOTOR_09 // abelsm2 running currents for homing Y axis
     #define Y_AXIS_CURRENT_R_HOME 10    // prusa default
 #else
-    #define Y_AXIS_CURRENT_R_HOME 12    // abelsm2 adjust y homing current slightly higher for 0.9 stepper
+    #define Y_AXIS_CURRENT_R_HOME 12    // abelsm2 adjust y homing current slightly higher for 0.9 stepper due to more mass
 #endif
 
 #define TMC2130_CURRENTS_R_HOME {X_AXIS_CURRENT_R_HOME, Y_AXIS_CURRENT_R_HOME, 20, 18}  // homing running currents for all axes
