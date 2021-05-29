@@ -98,7 +98,7 @@
     #define TMC2130_UNLOAD_CURRENT_R 20  // higher unload current than stock for M600
     #define EXTRUDER_GEARED
 #else
-    #define DEFAULT_AXIS_STEPS_PER_UNIT   {100,100,3200/8,280} // default steps/unit e-axis
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   {200,200,3200/8,280} // default steps/unit e-axis //abelsm2 DEDGE enabled in 3.10.0 so able to double steps/mm on X/Y
     #define TMC2130_UNLOAD_CURRENT_R 12  // lower current for M600 to protect filament sensor with stock extruder
 #endif
 
@@ -284,13 +284,13 @@
 #ifndef X_AXIS_MOTOR_09
     #define TMC2130_USTEPS_X    16      // microstep resolution for 1.8 degree X axis
 #else
-    #define TMC2130_USTEPS_X    8       // reduce X microsteps to 8 because EINSY cannot keep up with 16 on 0.9 degree motor
+    #define TMC2130_USTEPS_X    16       // microstep resolution for 0.9 degree X axis. DEDGE was enabled in 3.10.0 so able to double resolution on X axis
 #endif
 
 #ifndef Y_AXIS_MOTOR_09
     #define TMC2130_USTEPS_Y    16      // microstep resolution for 1.8 degree Y axis
 #else
-    #define TMC2130_USTEPS_Y    8       // reduce Y microsteps to 8 because EINSY cannot keep up with 16 on 0.9 degree motor
+    #define TMC2130_USTEPS_Y    16       // microstep resolution for 0.9 degree Y axis. DEDGE was enabled in 3.10.0 so able to double resolution on Y axis
 #endif
 
 #define TMC2130_USTEPS_Z        16      // microstep resolution for Z axis
