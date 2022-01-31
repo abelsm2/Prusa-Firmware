@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="52f8afc8-a45a-4be2-ba71-be79fcff276c" name="Default Changelist" comment="Updated steps/mm and microstepping on X/Y since DEDGE was enabled in 3.10.0" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIEW_PUSH_PROTECTED_ONLY" value="true" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="MK3_3.11.0" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1qgLZZYPm6g3HgkJObwyUNdFpT9" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.toDoOptions" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="52f8afc8-a45a-4be2-ba71-be79fcff276c" name="Default Changelist" comment="" />
+      <created>1617496343131</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1617496343131</updated>
+    </task>
+    <task id="LOCAL-00001" summary="initial commit config files">
+      <created>1617498345691</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1617498345691</updated>
+    </task>
+    <task id="LOCAL-00002" summary="revised comments for clarity">
+      <created>1617498379341</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1617498379341</updated>
+    </task>
+    <task id="LOCAL-00003" summary="revised unload to extrude slightly first, adjusted stallguard self check tolerance">
+      <created>1617571142369</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1617571142369</updated>
+    </task>
+    <task id="LOCAL-00004" summary="separated x/y axes so they would store independently">
+      <created>1617571401175</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1617571401175</updated>
+    </task>
+    <task id="LOCAL-00005" summary="separated x/y axes variables, adjusted load procedure to use variant settings, added m-codes for testing">
+      <created>1617572644345</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1617572644345</updated>
+    </task>
+    <task id="LOCAL-00006" summary="revised output of G81 to be relative to center point">
+      <created>1617574146821</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1617574146821</updated>
+    </task>
+    <task id="LOCAL-00007" summary="revised output of G81 to be relative to center point">
+      <created>1617574503377</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1617574503377</updated>
+    </task>
+    <task id="LOCAL-00008" summary="deleted mcode options for Z and E axes so they can't be adjusted by accident">
+      <created>1617586302771</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1617586302771</updated>
+    </task>
+    <task id="LOCAL-00009" summary="modify to use chopper config from variants">
+      <created>1617587431271</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1617587431271</updated>
+    </task>
+    <task id="LOCAL-00010" summary="added extern for tmc2130_sg_thr_home">
+      <created>1617589670762</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1617589670762</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add ability to use 0.9 degree stepper on x and y axes">
+      <created>1617591471869</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1617591471869</updated>
+    </task>
+    <task id="LOCAL-00012" summary="separated out instance of USTEPS for x and y">
+      <created>1617591890406</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1617591890406</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Uncommented defines for X and Y!">
+      <created>1618809822156</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1618809822157</updated>
+    </task>
+    <task id="LOCAL-00014" summary="ready to merge">
+      <created>1620613139418</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1620613139418</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Updated steps/mm and microstepping on X/Y since DEDGE was enabled in 3.10.0">
+      <created>1622303083438</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1622303083438</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="initial commit config files" />
+    <MESSAGE value="revised comments for clarity" />
+    <MESSAGE value="line separators changed during scripted compile" />
+    <MESSAGE value="revised unload to extrude slightly first, adjusted stallguard self check tolerance" />
+    <MESSAGE value="separated x/y axes so they would store independently" />
+    <MESSAGE value="separated x/y axes variables, adjusted load procedure to use variant settings, added m-codes for testing" />
+    <MESSAGE value="revised output of G81 to be relative to center point" />
+    <MESSAGE value="deleted mcode options for Z and E axes so they can't be adjusted by accident" />
+    <MESSAGE value="modify to use chopper config from variants" />
+    <MESSAGE value="added extern for tmc2130_sg_thr_home" />
+    <MESSAGE value="add ability to use 0.9 degree stepper on x and y axes" />
+    <MESSAGE value="separated out instance of USTEPS for x and y" />
+    <MESSAGE value="Uncommented defines for X and Y!" />
+    <MESSAGE value="ready to merge" />
+    <MESSAGE value="Successfully merged 3.10.0" />
+    <MESSAGE value="Updated steps/mm and microstepping on X/Y since DEDGE was enabled in 3.10.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated steps/mm and microstepping on X/Y since DEDGE was enabled in 3.10.0" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
