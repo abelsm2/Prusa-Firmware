@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52f8afc8-a45a-4be2-ba71-be79fcff276c" name="Default Changelist" comment="Updated steps/mm and microstepping on X/Y since DEDGE was enabled in 3.10.0">
+    <list default="true" id="52f8afc8-a45a-4be2-ba71-be79fcff276c" name="Default Changelist" comment="Cleanup before merge with 3.11.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Firmware/Configuration.h" beforeDir="false" afterPath="$PROJECT_DIR$/Firmware/Configuration.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Firmware/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/Firmware/config.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +146,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622303083438</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Cleanup before merge with 3.11.0">
+      <created>1653779135716</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1653779135716</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -188,7 +193,8 @@
     <MESSAGE value="ready to merge" />
     <MESSAGE value="Successfully merged 3.10.0" />
     <MESSAGE value="Updated steps/mm and microstepping on X/Y since DEDGE was enabled in 3.10.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated steps/mm and microstepping on X/Y since DEDGE was enabled in 3.10.0" />
+    <MESSAGE value="Cleanup before merge with 3.11.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleanup before merge with 3.11.0" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
