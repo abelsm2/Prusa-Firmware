@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52f8afc8-a45a-4be2-ba71-be79fcff276c" name="Default Changelist" comment="Updated steps/mm and microstepping on X/Y since DEDGE was enabled in 3.10.0" />
+    <list default="true" id="52f8afc8-a45a-4be2-ba71-be79fcff276c" name="Default Changelist" comment="Updated steps/mm and microstepping on X/Y since DEDGE was enabled in 3.10.0">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Firmware/Configuration.h" beforeDir="false" afterPath="$PROJECT_DIR$/Firmware/Configuration.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Firmware/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/Firmware/config.h" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
