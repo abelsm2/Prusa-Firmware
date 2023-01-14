@@ -69,8 +69,8 @@
 // abelsm2 Uncommented one or both below to specify 0.9 degree stepper motors on x or y axes
 // Motors used should be 1 amp or lower current rating to avoid overheating TMC2130 drivers in Stealthchop.
 // Kuo recommended 0.9 degree motors for X, Y, or direct drive E are Moons MS17HA2P4100 or OMC 17HM15-0904S
-//#define X_AXIS_MOTOR_09 // abelsm2 X axis
-//#define Y_AXIS_MOTOR_09 // abelsm2 Y axis
+#define X_AXIS_MOTOR_09 // abelsm2 X axis
+#define Y_AXIS_MOTOR_09 // abelsm2 Y axis
 
 // abelsm2 Uncomment for BNBSX geared extruders with 54:16 gear
 // Don't forget to also send gcode to set e-steps as detailed earlier
@@ -117,7 +117,7 @@
 
 // Home position
 #define MANUAL_X_HOME_POS 0
-#define MANUAL_Y_HOME_POS -2.2
+#define MANUAL_Y_HOME_POS 0 //abelsm2 (was -2.2) adjusting this to account for custom Y-Axis components
 #define MANUAL_Z_HOME_POS 0.2
 
 // Travel limits after homing

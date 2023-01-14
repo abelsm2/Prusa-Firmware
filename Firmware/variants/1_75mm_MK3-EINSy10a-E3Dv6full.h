@@ -115,7 +115,7 @@
 #define INVERT_E1_DIR 0    // for direct drive extruder v9 set to 1, for geared extruder set to 0
 #define INVERT_E2_DIR 0   // for direct drive extruder v9 set to 1, for geared extruder set to 0
 
-// Home position
+// Home position - //abelsm2 not used unless MANUAL_HOME_POSITIONS is uncommented in Configuration.h
 #define MANUAL_X_HOME_POS 0
 #define MANUAL_Y_HOME_POS -2.2
 #define MANUAL_Z_HOME_POS 0.2
@@ -123,8 +123,8 @@
 // Travel limits after homing
 #define X_MAX_POS 255
 #define X_MIN_POS 0
-#define Y_MAX_POS 212.5
-#define Y_MIN_POS -4 //orig -4
+#define Y_MAX_POS 212.5 //abelsm2 was 212.5
+#define Y_MIN_POS -4 //abelsm2 (was -4) adjusts for custom Y-Axis hardware
 #define Z_MAX_POS 210
 #define Z_MIN_POS 0.15
 
@@ -148,7 +148,7 @@
 #endif
 
 #ifdef Y_AXIS_MOTOR_09
-    #define HOMING_FEEDRATE_Y 2500  // different feed rate needed for reliable Y 0.9 degree motor stall Guard
+    #define HOMING_FEEDRATE_Y 2400  // different feed rate needed for reliable Y 0.9 degree motor stall Guard (was 2500)
 #else
     #define HOMING_FEEDRATE_Y 3000 // 3000 is also valid for stallGuard homing. Valid range: 2200 - 3000
 #endif
@@ -846,7 +846,7 @@
 
 #define M600_TIMEOUT 600  //seconds
 
-//#define SUPPORT_VERBOSITY
+#define SUPPORT_VERBOSITY
 
 #define MMU_REQUIRED_FW_BUILDNR 83
 #define MMU_HWRESET
