@@ -542,12 +542,6 @@
  LOAD/UNLOAD FILAMENT SETTINGS
  *------------------------------------*/
 
-// Load filament distances and rates
-#define LOAD_FILAMENT_DIST_1 40  // abelsm2 Prusa default load
-#define LOAD_FILAMENT_RATE_1 400
-#define LOAD_FILAMENT_DIST_2 30
-#define LOAD_FILAMENT_RATE_2 300
-
 // Unload filament distances and rates
 #define UNLOAD_FILAMENT_DIST_0 3  // abelsm2 extrude slightly first to form finer tip
 #define UNLOAD_FILAMENT_RATE_0 60
