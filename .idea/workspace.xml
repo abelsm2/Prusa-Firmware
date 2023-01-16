@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52f8afc8-a45a-4be2-ba71-be79fcff276c" name="Default Changelist" comment="updated homing rates and turned on TMC2130 define">
+    <list default="true" id="52f8afc8-a45a-4be2-ba71-be79fcff276c" name="Default Changelist" comment="misc parts from merge">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Firmware/Marlin_main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Firmware/Marlin_main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Firmware/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/Firmware/config.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Firmware/variants/1_75mm_MK3-EINSy10a-E3Dv6full.h" beforeDir="false" afterPath="$PROJECT_DIR$/Firmware/variants/1_75mm_MK3-EINSy10a-E3Dv6full.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -183,7 +181,28 @@
       <option name="project" value="LOCAL" />
       <updated>1673673069773</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="updated line missed in 3.12 merge">
+      <created>1673841961961</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1673841961962</updated>
+    </task>
+    <task id="LOCAL-00021" summary="deleted obsolete defines after 3.12 merge">
+      <created>1673841986786</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1673841986786</updated>
+    </task>
+    <task id="LOCAL-00022" summary="misc parts from merge">
+      <created>1673842060804</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1673842060804</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -228,7 +247,10 @@
     <MESSAGE value="Cleanup before merge with 3.11.0" />
     <MESSAGE value="Merged 3.11.0 into 0.9 degree branch" />
     <MESSAGE value="corrected files" />
-    <option name="LAST_COMMIT_MESSAGE" value="corrected files" />
+    <MESSAGE value="updated line missed in 3.12 merge" />
+    <MESSAGE value="deleted obsolete defines after 3.12 merge" />
+    <MESSAGE value="misc parts from merge" />
+    <option name="LAST_COMMIT_MESSAGE" value="misc parts from merge" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
