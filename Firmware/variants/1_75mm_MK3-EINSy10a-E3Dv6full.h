@@ -142,13 +142,13 @@
 // abelsm2 set the homing speeds (mm/min)
 // latest measurements suggest OMC at 2500 and Moons at 2400
 #ifdef X_AXIS_MOTOR_09
-    #define HOMING_FEEDRATE_X 2400  // different feed rate needed for reliable X 0.9 degree motor stall Guard
+    #define HOMING_FEEDRATE_X 2500  // abelsm2 (was 2400) different feed rate needed for reliable X 0.9 degree motor stall Guard
 #else
     #define HOMING_FEEDRATE_X 3000 // 3000 is also valid for stallGuard homing. Valid range: 2200 - 3000
 #endif
 
 #ifdef Y_AXIS_MOTOR_09
-    #define HOMING_FEEDRATE_Y 2400  // different feed rate needed for reliable Y 0.9 degree motor stall Guard (was 2500)
+    #define HOMING_FEEDRATE_Y 2500  // abelsm2 (was 2500) different feed rate needed for reliable Y 0.9 degree motor stall Guard
 #else
     #define HOMING_FEEDRATE_Y 3000 // 3000 is also valid for stallGuard homing. Valid range: 2200 - 3000
 #endif
@@ -468,7 +468,7 @@
 #define TMC2130_STEALTH_Z
 #define TMC2130_DEDGE_STEPPING
 
-//#define TMC2130_SERVICE_CODES_M910_M918 // abelsm2 Uncomment this line to enable TMC2130 service codes
+#define TMC2130_SERVICE_CODES_M910_M918 // abelsm2 Uncomment this line to enable TMC2130 service codes
 
 //#define TMC2130_DEBUG
 //#define TMC2130_DEBUG_WR
