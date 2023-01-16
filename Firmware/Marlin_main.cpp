@@ -3692,7 +3692,6 @@ void gcode_M701()
 		plan_buffer_line_curposXYZE(FILAMENTCHANGE_EFEED_FIRST); //fast sequence
 		st_synchronize();
 
-        // abelsm2 second part of load filament using rate and distance from variant settings
         raise_z_above(MIN_Z_FOR_LOAD, false);
 		current_position[E_AXIS] += feed_mm_before_raising;
 		plan_buffer_line_curposXYZE(FILAMENTCHANGE_EFEED_FIRST); //fast sequence
@@ -5217,8 +5216,8 @@ eeprom_update_word((uint16_t*)EEPROM_NOZZLE_DIAMETER_uM,0xFFFF);
                 // abelsm2 adjust output so center point is at 0 and everything else is relative to it
                 float centerPoint = mbl.z_values[((MESH_NUM_Y_POINTS+1) / 2) - 1][((MESH_NUM_Y_POINTS+1) / 2) - 1];
 
-                for (int y = MESH_NUM_Y_POINTS-1; y >= 0; y--) {
-                    for (int x = 0; x < MESH_NUM_X_POINTS; x++) {
+                for (uint8_t y = MESH_NUM_Y_POINTS; y-- > 0;) {
+                    for (uint8_t x = 0; x < MESH_NUM_X_POINTS; x++) {
                         SERIAL_PROTOCOLPGM("  ");
                         SERIAL_PROTOCOL_F(mbl.z_values[y][x] - centerPoint, 5); // abelsm2
                     }
